@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_financial_calc_form" model="ir.ui.view">
+        <field name="name">financial.calculation.form</field>
+        <field name="model">financial.calculation</field>
+        <field name="arch" type="xml">
+            <form string="الحساب المالي">
+                <header>
+                    <button name="action_confirm" string="تأكيد" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_done" string="إنهاء" type="object" invisible="state != 'confirmed'"/>
+                    <button name="action_draft" string="إعادة لمسودة" type="object" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-success" invisible="not is_profitable">✅ هذا الحساب رابح</div>
+                    <div class="alert alert-danger" invisible="is_profitable or net_profit == 0">❌ هذا الحساب خاسر</div>
+                    <group>
+                        <group><field name="name"/><field name="date"/><field name="currency_id"/></group>
+                    </group>
+                    <notebook>
+                        <page string="💰 الإيرادات والتكاليف">
+                            <group>
+                                <group string="الإيرادات">
+                                    <field name="revenue"/><field name="other_revenue"/>
+                                    <field name="total_revenue" readonly="1"/>
+                                </group>
+                                <group string="التكاليف">
+                                    <field name="cost_of_goods"/><field name="operating_expenses"/>
+                                    <field name="gross_profit" readonly="1"/>
+                                    <field name="gross_margin" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="📊 الخصم والضريبة وصافي الربح">
+                            <group>
+                                <group string="الخصم">
+                                    <field name="discount_rate"/><field name="discount_amount" readonly="1"/>
+                                </group>
+                                <group string="الضريبة">
+                                    <field name="tax_rate"/><field name="tax_amount" readonly="1"/>
+                                </group>
+                            </group>
+                            <group string="النتيجة النهائية">
+                                <field name="operating_profit" readonly="1"/>
+                                <field name="net_profit" readonly="1"/>
+                                <field name="net_margin" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    <field name="notes"/>
+                </sheet>
+                <div class="oe_chatter"><field name="message_follower_ids"/><field name="message_ids"/></div>
+            </form>
+        </field>
+    </record>
+    <record id="view_financial_calc_tree" model="ir.ui.view">
+        <field name="name">financial.calculation.tree</field>
+        <field name="model">financial.calculation</field>
+        <field name="arch" type="xml">
+            <tree string="الحسابات المالية" decoration-success="is_profitable" decoration-danger="not is_profitable and net_profit != 0">
+                <field name="name"/><field name="date"/><field name="total_revenue"/>
+                <field name="net_profit"/><field name="net_margin"/>
+                <field name="state" widget="badge" decoration-success="state=='confirmed'" decoration-info="state=='draft'"/>
+                <field name="is_profitable" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_financial_calculations" model="ir.actions.act_window">
+        <field name="name">الحسابات المالية</field>
+        <field name="res_model">financial.calculation</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+    </record>
+</odoo>

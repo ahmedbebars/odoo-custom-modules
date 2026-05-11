@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pos_order_ext_user,pos.order.extension.user,model_pos_order_extension,base.group_user,1,1,1,0
+access_pos_order_ext_manager,pos.order.extension.manager,model_pos_order_extension,base.group_system,1,1,1,1
+access_pos_order_ext_line_user,pos.order.ext.line.user,model_pos_order_ext_line,base.group_user,1,1,1,0
+access_pos_order_ext_line_manager,pos.order.ext.line.manager,model_pos_order_ext_line,base.group_system,1,1,1,1
+access_pos_session_report_user,pos.session.report.user,model_pos_session_report,base.group_user,1,1,1,0
+access_pos_session_report_manager,pos.session.report.manager,model_pos_session_report,base.group_system,1,1,1,1
+access_pos_loyalty_program_user,pos.loyalty.program.user,model_pos_loyalty_program,base.group_user,1,0,0,0
+access_pos_loyalty_program_manager,pos.loyalty.program.manager,model_pos_loyalty_program,base.group_system,1,1,1,1
+access_pos_loyalty_card_user,pos.loyalty.card.user,model_pos_loyalty_card,base.group_user,1,1,1,0
+access_pos_loyalty_card_manager,pos.loyalty.card.manager,model_pos_loyalty_card,base.group_system,1,1,1,1
+access_pos_floor_plan_user,pos.floor.plan.user,model_pos_floor_plan,base.group_user,1,0,0,0
+access_pos_floor_plan_manager,pos.floor.plan.manager,model_pos_floor_plan,base.group_system,1,1,1,1
+access_pos_table_plan_user,pos.table.plan.user,model_pos_table_plan,base.group_user,1,1,0,0
+access_pos_table_plan_manager,pos.table.plan.manager,model_pos_table_plan,base.group_system,1,1,1,1

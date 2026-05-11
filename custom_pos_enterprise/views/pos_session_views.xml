@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_session_report_form" model="ir.ui.view">
+        <field name="name">pos.session.report.form</field>
+        <field name="model">pos.session.report</field>
+        <field name="arch" type="xml">
+            <form string="تقرير الجلسة">
+                <header>
+                    <button name="action_close_session" string="🔒 إغلاق الجلسة" type="object" class="oe_highlight" invisible="state=='closed'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box">
+                        <button class="oe_stat_button" type="object" icon="fa-shopping-cart">
+                            <field name="total_orders" widget="statinfo" string="طلب"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" icon="fa-money">
+                            <field name="total_revenue" widget="statinfo" string="إيراد"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group><field name="name"/><field name="date"/><field name="cashier_id"/></group>
+                        <group string="الكاش">
+                            <field name="opening_cash"/><field name="cash_amount" readonly="1"/>
+                            <field name="closing_cash"/><field name="cash_difference" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="ملخص" col="4">
+                        <field name="cash_amount" readonly="1"/><field name="card_amount" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_pos_sessions" model="ir.actions.act_window">
+        <field name="name">جلسات POS</field>
+        <field name="res_model">pos.session.report</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

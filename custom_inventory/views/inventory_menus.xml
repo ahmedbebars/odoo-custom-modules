@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_inventory_root" name="📦 المخزون المخصص" sequence="86"/>
+    <menuitem id="menu_inventory_products" name="المنتجات" parent="menu_inventory_root" action="action_inventory_products" sequence="1"/>
+    <menuitem id="menu_inventory_movements" name="الحركات" parent="menu_inventory_root" action="action_inventory_movements" sequence="2"/>
+</odoo>

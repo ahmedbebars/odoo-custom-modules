@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_planning_role_user,planning.role.user,model_planning_role,base.group_user,1,0,0,0
+access_planning_role_manager,planning.role.manager,model_planning_role,base.group_system,1,1,1,1
+access_planning_resource_user,planning.resource.user,model_planning_resource,base.group_user,1,0,0,0
+access_planning_resource_manager,planning.resource.manager,model_planning_resource,base.group_system,1,1,1,1
+access_planning_template_user,planning.template.user,model_planning_shift_template,base.group_user,1,0,0,0
+access_planning_template_manager,planning.template.manager,model_planning_shift_template,base.group_system,1,1,1,1
+access_planning_shift_user,planning.shift.user,model_planning_shift,base.group_user,1,0,0,0
+access_planning_shift_manager,planning.shift.manager,model_planning_shift,base.group_system,1,1,1,1
+access_planning_auto_plan_user,planning.auto.plan.user,model_planning_auto_plan,base.group_user,1,1,1,1
+access_planning_send_schedule_user,planning.send.schedule.user,model_planning_send_schedule,base.group_user,1,1,1,1

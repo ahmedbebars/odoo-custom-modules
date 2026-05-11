@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Shift Form View -->
+    <record id="view_planning_shift_form" model="ir.ui.view">
+        <field name="name">planning.shift.form</field>
+        <field name="model">planning.shift</field>
+        <field name="arch" type="xml">
+            <form string="شيفت">
+                <header>
+                    <button name="action_publish" string="📢 نشر الشيفت"
+                            type="object" class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    <button name="action_create_recurring" string="🔄 إنشاء التكرارات"
+                            type="object" invisible="not repeat"/>
+                    <button name="action_request_switch" string="🔁 طلب تبادل"
+                            type="object" invisible="state != 'published'"/>
+                    <button name="action_unassign" string="❌ إلغاء التخصيص"
+                            type="object" invisible="state != 'published' or not resource_id"/>
+                    <button name="action_cancel" string="إلغاء الشيفت"
+                            type="object" invisible="state == 'cancelled'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,published,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" icon="fa-clock-o" type="object" name="">
+                            <field name="allocated_hours" widget="float_time" string="ساعات"/>
+                        </button>
+                    </div>
+
+                    <!-- تنبيه شيفت مفتوح -->
+                    <div class="alert alert-warning" invisible="resource_id">
+                        <i class="fa fa-exclamation-triangle"/> هذا شيفت مفتوح — لم يتم تخصيص مورد بعد
+                    </div>
+                    <!-- تنبيه طلب تبادل -->
+                    <div class="alert alert-info" invisible="not switch_requested">
+                        <i class="fa fa-exchange"/> طلب تبادل الشيفت من: <field name="switch_requested_by" readonly="1"/>
+                    </div>
+
+                    <group>
+                        <group string="الشيفت">
+                            <field name="template_id"
+                                   options="{'no_create': True}"/>
+                            <field name="role_id"/>
+                            <field name="resource_id"
+                                   domain="[('role_ids', 'in', [role_id])]"/>
+                        </group>
+                        <group string="الوقت">
+                            <field name="start_datetime"/>
+                            <field name="end_datetime"/>
+                            <field name="allocated_hours" widget="float_time" readonly="1"/>
+                            <field name="allocated_percentage"/>
+                        </group>
+                    </group>
+
+                    <group string="التكرار">
+                        <field name="repeat"/>
+                        <field name="repeat_type" invisible="not repeat"/>
+                        <field name="repeat_interval" invisible="not repeat"/>
+                        <field name="repeat_until" invisible="not repeat"/>
+                    </group>
+
+                    <group string="معلومات إضافية">
+                        <field name="note" placeholder="ملاحظة للموظف..."/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Shift Tree View -->
+    <record id="view_planning_shift_tree" model="ir.ui.view">
+        <field name="name">planning.shift.tree</field>
+        <field name="model">planning.shift</field>
+        <field name="arch" type="xml">
+            <tree string="الشيفتات"
+                  decoration-success="state == 'published'"
+                  decoration-muted="state == 'cancelled'"
+                  decoration-warning="is_open_shift">
+                <field name="start_datetime"/>
+                <field name="end_datetime"/>
+                <field name="resource_id"/>
+                <field name="role_id"/>
+                <field name="allocated_hours" widget="float_time"/>
+                <field name="allocated_percentage"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'published'"
+                       decoration-info="state == 'draft'"
+                       decoration-danger="state == 'cancelled'"/>
+                <field name="is_open_shift" invisible="1"/>
+                <field name="switch_requested" invisible="1"/>
+                <button name="action_publish" string="نشر" type="object"
+                        invisible="state != 'draft'" class="btn-sm btn-primary"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Shift Calendar View -->
+    <record id="view_planning_shift_calendar" model="ir.ui.view">
+        <field name="name">planning.shift.calendar</field>
+        <field name="model">planning.shift</field>
+        <field name="arch" type="xml">
+            <calendar string="جدول الشيفتات"
+                      date_start="start_datetime"
+                      date_stop="end_datetime"
+                      color="color"
+                      mode="week"
+                      event_limit="5">
+                <field name="resource_id" filters="1"/>
+                <field name="role_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Shift Pivot View -->
+    <record id="view_planning_shift_pivot" model="ir.ui.view">
+        <field name="name">planning.shift.pivot</field>
+        <field name="model">planning.shift</field>
+        <field name="arch" type="xml">
+            <pivot string="تحليل الشيفتات">
+                <field name="resource_id" type="row"/>
+                <field name="role_id" type="col"/>
+                <field name="allocated_hours" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Shift Graph View -->
+    <record id="view_planning_shift_graph" model="ir.ui.view">
+        <field name="name">planning.shift.graph</field>
+        <field name="model">planning.shift</field>
+        <field name="arch" type="xml">
+            <graph string="رسم بياني للشيفتات" type="bar">
+                <field name="resource_id" type="row"/>
+                <field name="allocated_hours" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_planning_shift_search" model="ir.ui.view">
+        <field name="name">planning.shift.search</field>
+        <field name="model">planning.shift</field>
+        <field name="arch" type="xml">
+            <search string="بحث في الشيفتات">
+                <field name="resource_id"/>
+                <field name="role_id"/>
+                <separator/>
+                <filter string="📢 منشور" name="published" domain="[('state','=','published')]"/>
+                <filter string="📝 مسودة" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="🔓 شيفتات مفتوحة" name="open" domain="[('resource_id','=',False)]"/>
+                <filter string="🔁 طلبات تبادل" name="switch" domain="[('switch_requested','=',True)]"/>
+                <filter string="📅 هذا الأسبوع" name="this_week"
+                        domain="[('start_datetime','&gt;=', (datetime.date.today() - datetime.timedelta(days=datetime.date.today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <group expand="1" string="تجميع حسب">
+                    <filter string="المورد" name="group_resource" context="{'group_by': 'resource_id'}"/>
+                    <filter string="الدور" name="group_role" context="{'group_by': 'role_id'}"/>
+                    <filter string="الحالة" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="الأسبوع" name="group_week" context="{'group_by': 'start_datetime:week'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action: Shifts -->
+    <record id="action_planning_shifts" model="ir.actions.act_window">
+        <field name="name">الشيفتات</field>
+        <field name="res_model">planning.shift</field>
+        <field name="view_mode">tree,calendar,pivot,graph,form</field>
+        <field name="search_view_id" ref="view_planning_shift_search"/>
+        <field name="context">{'search_default_this_week': 1}</field>
+    </record>
+
+    <!-- Action: My Schedule -->
+    <record id="action_my_planning" model="ir.actions.act_window">
+        <field name="name">جدولي</field>
+        <field name="res_model">planning.shift</field>
+        <field name="view_mode">calendar,tree,form</field>
+        <field name="domain">[('state','=','published')]</field>
+    </record>
+
+    <!-- Action: Open Shifts -->
+    <record id="action_open_shifts" model="ir.actions.act_window">
+        <field name="name">الشيفتات المفتوحة</field>
+        <field name="res_model">planning.shift</field>
+        <field name="view_mode">tree,form,calendar</field>
+        <field name="domain">[('resource_id','=',False),('state','=','draft')]</field>
+    </record>
+
+</odoo>

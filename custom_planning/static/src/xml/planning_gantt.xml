@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+
+    <!-- قالب بطاقة الشيفت -->
+    <t t-name="custom_planning.ShiftCard">
+        <div t-attf-class="planning_shift_bar #{state}"
+             t-att-title="resource_name + ' - ' + role_name">
+            <span class="px-2 text-white small fw-bold" t-esc="resource_name"/>
+        </div>
+    </t>
+
+    <!-- قالب شريط الساعات -->
+    <t t-name="custom_planning.HoursBar">
+        <div class="planning_hours_bar">
+            <div class="fill" t-attf-style="width: #{percentage}%"/>
+        </div>
+        <small class="text-muted"><t t-esc="hours"/> ساعة</small>
+    </t>
+
+</templates>

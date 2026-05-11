@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_financial_calc_root" name="💰 الحسابات المالية" sequence="85" web_icon="custom_calculations,static/src/img/icon.png"/>
+    <menuitem id="menu_financial_calc_list" name="الحسابات" parent="menu_financial_calc_root" action="action_financial_calculations" sequence="1"/>
+</odoo>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========== القائمة الرئيسية ========== -->
+    <menuitem id="menu_planning_root"
+              name="📅 التخطيط"
+              web_icon="custom_planning,static/src/img/icon.png"
+              sequence="90"/>
+
+    <!-- جدولتي -->
+    <menuitem id="menu_my_planning"
+              name="🗓️ جدولتي"
+              parent="menu_planning_root"
+              action="action_my_planning"
+              sequence="5"/>
+
+    <!-- الجداول -->
+    <menuitem id="menu_planning_schedules"
+              name="📋 الجداول"
+              parent="menu_planning_root"
+              sequence="10"/>
+
+    <menuitem id="menu_planning_all_shifts"
+              name="كل الشيفتات"
+              parent="menu_planning_schedules"
+              action="action_planning_shifts"
+              sequence="1"/>
+
+    <menuitem id="menu_planning_open_shifts"
+              name="🔓 الشيفتات المفتوحة"
+              parent="menu_planning_schedules"
+              action="action_open_shifts"
+              sequence="2"/>
+
+    <!-- أدوات التخطيط -->
+    <menuitem id="menu_planning_tools"
+              name="🛠️ أدوات"
+              parent="menu_planning_root"
+              sequence="20"/>
+
+    <menuitem id="menu_planning_auto_plan"
+              name="🤖 Auto Plan التلقائي"
+              parent="menu_planning_tools"
+              action="action_planning_auto_plan"
+              sequence="1"/>
+
+    <menuitem id="menu_planning_send_schedule"
+              name="📢 نشر الجدول"
+              parent="menu_planning_tools"
+              action="action_planning_send_schedule"
+              sequence="2"/>
+
+    <!-- التقارير -->
+    <menuitem id="menu_planning_reports"
+              name="📊 التقارير"
+              parent="menu_planning_root"
+              sequence="30"/>
+
+    <menuitem id="menu_planning_report_main"
+              name="تحليل الشيفتات"
+              parent="menu_planning_reports"
+              action="action_planning_report"
+              sequence="1"/>
+
+    <!-- الإعداد -->
+    <menuitem id="menu_planning_config"
+              name="⚙️ إعدادات"
+              parent="menu_planning_root"
+              sequence="99"/>
+
+    <menuitem id="menu_planning_roles"
+              name="الأدوار"
+              parent="menu_planning_config"
+              action="action_planning_roles"
+              sequence="1"/>
+
+    <menuitem id="menu_planning_resources"
+              name="الموارد"
+              parent="menu_planning_config"
+              action="action_planning_resources"
+              sequence="2"/>
+
+    <menuitem id="menu_planning_templates"
+              name="قوالب الشيفتات"
+              parent="menu_planning_config"
+              action="action_planning_templates"
+              sequence="3"/>
+</odoo>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_pos_enterprise_root" name="🛒 POS Enterprise" sequence="87"/>
+    <menuitem id="menu_pos_orders" name="الطلبات" parent="menu_pos_enterprise_root" action="action_pos_order_extensions" sequence="1"/>
+    <menuitem id="menu_pos_sessions" name="الجلسات" parent="menu_pos_enterprise_root" action="action_pos_sessions" sequence="2"/>
+    <menuitem id="menu_pos_loyalty" name="برنامج الولاء" parent="menu_pos_enterprise_root" action="action_pos_loyalty_cards" sequence="3"/>
+    <menuitem id="menu_pos_floor" name="مخطط الطابق" parent="menu_pos_enterprise_root" action="action_pos_floor_plan" sequence="4"/>
+</odoo>

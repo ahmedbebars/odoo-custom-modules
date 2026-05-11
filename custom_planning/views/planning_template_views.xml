@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_planning_template_tree" model="ir.ui.view">
+        <field name="name">planning.shift.template.tree</field>
+        <field name="model">planning.shift.template</field>
+        <field name="arch" type="xml">
+            <tree string="قوالب الشيفتات" editable="bottom">
+                <field name="name"/>
+                <field name="role_id"/>
+                <field name="start_hour" widget="float_time"/>
+                <field name="duration" widget="float_time"/>
+                <field name="end_hour" widget="float_time" readonly="1"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_planning_templates" model="ir.actions.act_window">
+        <field name="name">قوالب الشيفتات</field>
+        <field name="res_model">planning.shift.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

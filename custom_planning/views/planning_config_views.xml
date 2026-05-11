@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- تمديد إعدادات الشركة -->
+    <record id="view_planning_config_settings" model="ir.ui.view">
+        <field name="name">res.config.settings.planning</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.action_general_configuration"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='hr']" position="after">
+                <app string="📅 التخطيط" name="custom_planning">
+                    <block title="إعدادات الشيفتات">
+                        <setting>
+                            <field name="planning_allow_unassignment"/>
+                            <div class="text-muted">
+                                تسمح للموظفين بإلغاء تخصيص أنفسهم من الشيفتات المنشورة
+                            </div>
+                        </setting>
+                        <setting invisible="not planning_allow_unassignment">
+                            <field name="planning_unassignment_days"/>
+                            <div class="text-muted">أقصى عدد أيام قبل الشيفت لإلغاء التخصيص</div>
+                        </setting>
+                        <setting>
+                            <field name="planning_recurring_months"/>
+                            <div class="text-muted">عدد الأشهر التي يتم إنشاء الشيفتات المتكررة مسبقاً</div>
+                        </setting>
+                        <setting>
+                            <field name="planning_send_email"/>
+                            <div class="text-muted">إرسال إشعارات بريد إلكتروني عند نشر الجدول</div>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Auto Plan Wizard View -->
+    <record id="view_planning_auto_plan_wizard" model="ir.ui.view">
+        <field name="name">planning.auto.plan.wizard</field>
+        <field name="model">planning.auto.plan</field>
+        <field name="arch" type="xml">
+            <form string="التخطيط التلقائي">
+                <group>
+                    <group string="الفترة الزمنية">
+                        <field name="date_start"/>
+                        <field name="date_end"/>
+                        <field name="open_shifts_count" readonly="1"/>
+                    </group>
+                    <group string="الإعدادات">
+                        <field name="consider_time_off"/>
+                        <field name="consider_working_hours"/>
+                        <field name="consider_contracts"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_auto_plan" string="🤖 تشغيل Auto Plan"
+                            type="object" class="btn-primary"/>
+                    <button string="إلغاء" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_planning_auto_plan" model="ir.actions.act_window">
+        <field name="name">التخطيط التلقائي</field>
+        <field name="res_model">planning.auto.plan</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Send Schedule Wizard View -->
+    <record id="view_planning_send_schedule_wizard" model="ir.ui.view">
+        <field name="name">planning.send.schedule.wizard</field>
+        <field name="model">planning.send.schedule</field>
+        <field name="arch" type="xml">
+            <form string="نشر الجدول وإرسال الإشعارات">
+                <group>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="resource_ids" widget="many2many_tags"/>
+                    <field name="shifts_count" readonly="1"/>
+                </group>
+                <footer>
+                    <button name="action_publish_and_send" string="📢 نشر وإرسال"
+                            type="object" class="btn-primary"/>
+                    <button string="إلغاء" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_planning_send_schedule" model="ir.actions.act_window">
+        <field name="name">نشر الجدول</field>
+        <field name="res_model">planning.send.schedule</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
