@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Form View -->
+    <record id="view_inventory_movement_form" model="ir.ui.view">
+        <field name="name">inventory.movement.form</field>
+        <field name="model">inventory.movement</field>
+        <field name="arch" type="xml">
+            <form string="حركة المخزون">
+                <header>
+                    <button name="action_confirm" string="تأكيد" type="object"
+                            class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_done" string="تنفيذ" type="object"
+                            class="oe_highlight" invisible="state != 'confirmed'"/>
+                    <button name="action_cancel" string="إلغاء" type="object"
+                            invisible="state == 'done' or state == 'cancelled'"/>
+                    <button name="action_reset_draft" string="إعادة للمسودة" type="object"
+                            invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="بيانات الحركة">
+                            <field name="product_id"/>
+                            <field name="move_type"/>
+                            <field name="date"/>
+                            <field name="quantity"/>
+                            <field name="unit_price"/>
+                            <field name="total_value" readonly="1"/>
+                        </group>
+                        <group string="بيانات إضافية">
+                            <field name="reference"/>
+                            <field name="partner"/>
+                            <field name="qty_before" string="الكمية قبل الحركة" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="ملاحظات">
+                        <field name="notes" nolabel="1" placeholder="أضف ملاحظاتك..."/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_inventory_movement_tree" model="ir.ui.view">
+        <field name="name">inventory.movement.tree</field>
+        <field name="model">inventory.movement</field>
+        <field name="arch" type="xml">
+            <tree string="حركات المخزون"
+                  decoration-success="move_type == 'in' and state == 'done'"
+                  decoration-danger="move_type == 'out' and state == 'done'"
+                  decoration-warning="state == 'confirmed'"
+                  decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="product_id"/>
+                <field name="move_type"/>
+                <field name="quantity" sum="إجمالي الكميات"/>
+                <field name="unit_price"/>
+                <field name="total_value" sum="إجمالي القيمة"/>
+                <field name="reference"/>
+                <field name="partner"/>
+                <field name="state" widget="badge"
+                       decoration-warning="state == 'draft'"
+                       decoration-info="state == 'confirmed'"
+                       decoration-success="state == 'done'"
+                       decoration-danger="state == 'cancelled'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_inventory_movement_search" model="ir.ui.view">
+        <field name="name">inventory.movement.search</field>
+        <field name="model">inventory.movement</field>
+        <field name="arch" type="xml">
+            <search string="بحث في الحركات">
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="reference"/>
+                <field name="partner"/>
+                <separator/>
+                <filter name="in_moves" string="وارد" domain="[('move_type','=','in')]"/>
+                <filter name="out_moves" string="صادر" domain="[('move_type','=','out')]"/>
+                <separator/>
+                <filter name="draft" string="مسودة" domain="[('state','=','draft')]"/>
+                <filter name="confirmed" string="مؤكد" domain="[('state','=','confirmed')]"/>
+                <filter name="done" string="منفذ" domain="[('state','=','done')]"/>
+                <separator/>
+                <filter name="today" string="اليوم"
+                        domain="[('date','&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00'))]"/>
+                <group expand="0" string="تجميع حسب">
+                    <filter name="group_product" string="المنتج"
+                            context="{'group_by': 'product_id'}"/>
+                    <filter name="group_type" string="نوع الحركة"
+                            context="{'group_by': 'move_type'}"/>
+                    <filter name="group_date" string="التاريخ"
+                            context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_inventory_movement" model="ir.actions.act_window">
+        <field name="name">حركات المخزون</field>
+        <field name="res_model">inventory.movement</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_inventory_movement_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">أضف أول حركة مخزون!</p>
+            <p>تتبع الوارد والصادر من المخزون.</p>
+        </field>
+    </record>
+
+    <!-- In Movements Action -->
+    <record id="action_inventory_in" model="ir.actions.act_window">
+        <field name="name">حركات الوارد</field>
+        <field name="res_model">inventory.movement</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('move_type','=','in')]</field>
+        <field name="context">{'default_move_type': 'in'}</field>
+    </record>
+
+    <!-- Out Movements Action -->
+    <record id="action_inventory_out" model="ir.actions.act_window">
+        <field name="name">حركات الصادر</field>
+        <field name="res_model">inventory.movement</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('move_type','=','out')]</field>
+        <field name="context">{'default_move_type': 'out'}</field>
+    </record>
+
+</odoo>

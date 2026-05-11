@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- القائمة الرئيسية -->
+    <menuitem id="menu_custom_inventory_root"
+              name="إدارة المخزون"
+              sequence="95"
+              web_icon="custom_inventory,static/description/icon.png"/>
+
+    <!-- المنتجات -->
+    <menuitem id="menu_inventory_products"
+              name="المنتجات"
+              parent="menu_custom_inventory_root"
+              action="action_inventory_product"
+              sequence="10"/>
+
+    <!-- حركات المخزون -->
+    <menuitem id="menu_inventory_movements_root"
+              name="الحركات"
+              parent="menu_custom_inventory_root"
+              sequence="20"/>
+
+    <menuitem id="menu_inventory_all_movements"
+              name="كل الحركات"
+              parent="menu_inventory_movements_root"
+              action="action_inventory_movement"
+              sequence="1"/>
+
+    <menuitem id="menu_inventory_in"
+              name="حركات الوارد"
+              parent="menu_inventory_movements_root"
+              action="action_inventory_in"
+              sequence="2"/>
+
+    <menuitem id="menu_inventory_out"
+              name="حركات الصادر"
+              parent="menu_inventory_movements_root"
+              action="action_inventory_out"
+              sequence="3"/>
+
+    <!-- تنبيهات -->
+    <menuitem id="menu_inventory_alerts"
+              name="⚠️ تنبيهات المخزون"
+              parent="menu_custom_inventory_root"
+              action="action_low_stock_products"
+              sequence="30"/>
+
+</odoo>

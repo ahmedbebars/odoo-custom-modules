@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_inventory_product_user,inventory.product.user,model_inventory_product,base.group_user,1,1,1,0
+access_inventory_product_manager,inventory.product.manager,model_inventory_product,base.group_system,1,1,1,1
+access_inventory_movement_user,inventory.movement.user,model_inventory_movement,base.group_user,1,1,1,0
+access_inventory_movement_manager,inventory.movement.manager,model_inventory_movement,base.group_system,1,1,1,1
